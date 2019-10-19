@@ -22,8 +22,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const encrypt = (text, delta) => text.replace(/[a-zA-Z]/g, (letter) => String.fromCharCode(letter.charCodeAt() + delta));
-const decrypt = (text, delta) => text.replace(/[a-zA-Z]/g, (letter) => String.fromCharCode(letter.charCodeAt() - delta));
+const upper = (delta) => (letter) => String.fromCharCode((letter.charCodeAt() + delta - 65) % 26 + 65);
+const lower = (delta) => (letter) => String.fromCharCode((letter.charCodeAt() + delta - 97) % 26 + 97);
+const encrypt = (text, delta) => text.replace(/[A-Z]/g, upper(delta)).replace(/[a-z]/g, lower(delta));
 
 const shiftValues = [...Array(24).keys()];
 
@@ -42,7 +43,7 @@ function App() {
     const handleEncryptedChange = (e) => {
         const { value } = e.target;
         setEncrypted(value);
-        setText(decrypt(value, delta));
+        setText(encrypt(value, delta));
     }
 
     // Reset Text and Encrypted if we change the delta
