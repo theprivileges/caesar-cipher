@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -26,6 +26,9 @@ const shiftValues = [...Array(24).keys()];
 
 function App() {
     const classes = useStyles();
+    const [text, setText] = useState('');
+    const [encrypted, setEncrypted] = useState('');
+    const [delta, setDelta] = useState('');
 
     return (
         <Container size="sm">
@@ -40,6 +43,8 @@ function App() {
                             <Select
                                 id="delta"
                                 name="delta"
+                                value={delta}
+                                onChange={(e) => setDelta(e.target.value)}
                             >
                                 <MenuItem value={0}>
                                     <em>None</em>
@@ -54,12 +59,24 @@ function App() {
                 </Grid>
                 <Grid item xs={6}>
                     <Paper className={classes.paper} elevation={0}>
-                        <TextField id="plain" name="plain" label="Plain Text" fullWidth />
+                        <TextField
+                            id="plain"
+                            name="plain"
+                            label="Plain Text"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            fullWidth />
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
                     <Paper className={classes.paper} elevation={0}>
-                        <TextField id="encrypted" name="encrypted" label="Encrypted Text" fullWidth />
+                        <TextField
+                            id="encrypted"
+                            name="encrypted"
+                            label="Encrypted Text"
+                            value={encrypted}
+                            onChange={(e) => setEncrypted(e.target.value)}
+                            fullWidth />
                     </Paper>
                 </Grid>
             </Grid>
