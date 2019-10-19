@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const encrypt = (text, delta) => text.replace(/[a-zA-Z]/g, (letter) => String.fromCharCode(letter.charCodeAt() + delta));
+const decrypt = (text, delta) => text.replace(/[a-zA-Z]/g, (letter) => String.fromCharCode(letter.charCodeAt() - delta));
+
 const shiftValues = [...Array(24).keys()];
 
 function App() {
@@ -29,6 +32,24 @@ function App() {
     const [text, setText] = useState('');
     const [encrypted, setEncrypted] = useState('');
     const [delta, setDelta] = useState('');
+
+    const handleTextChange = (e) => {
+        const { value } = e.target;
+        setText(value);
+        setEncrypted(encrypt(value, delta));
+    }
+
+    const handleEncryptedChange = (e) => {
+        const { value } = e.target;
+        setEncrypted(value);
+        setText(decrypt(value, delta));
+    }
+
+    // Reset Text and Encrypted if we change the delta
+    useEffect(() => {
+        setText('')
+        setEncrypted('')
+    }, [delta])
 
     return (
         <Container size="sm">
@@ -50,7 +71,7 @@ function App() {
                                     <em>None</em>
                                 </MenuItem>
                                 {shiftValues.map((idx) => (
-                                    <MenuItem value={idx + 1}>{idx + 1}</MenuItem>
+                                    <MenuItem key={idx} value={idx + 1}>{idx + 1}</MenuItem>
                                 ))}
                             </Select>
                             <FormHelperText>How many letters to shift.</FormHelperText>
@@ -64,7 +85,7 @@ function App() {
                             name="plain"
                             label="Plain Text"
                             value={text}
-                            onChange={(e) => setText(e.target.value)}
+                            onChange={handleTextChange}
                             fullWidth />
                     </Paper>
                 </Grid>
@@ -75,7 +96,7 @@ function App() {
                             name="encrypted"
                             label="Encrypted Text"
                             value={encrypted}
-                            onChange={(e) => setEncrypted(e.target.value)}
+                            onChange={handleEncryptedChange}
                             fullWidth />
                     </Paper>
                 </Grid>
