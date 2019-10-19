@@ -5,11 +5,14 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "flow-bin": "^0.109.0",
+    "gh-pages": "^2.1.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-scripts": "3.2.0"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -51,5 +54,5 @@
   "bugs": {
     "url": "https://github.com/theprivileges/caesar-cipher/issues"
   },
-  "homepage": "https://github.com/theprivileges/caesar-cipher#readme"
+  "homepage": "https://theprivileges.github.io/caesar-cipher"
 }
