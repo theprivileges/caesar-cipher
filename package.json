@@ -30,5 +30,26 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "keywords": [
+    "caesar",
+    "cipher",
+    "encryption",
+    "material-ui",
+    "react",
+    "react-hooks"
+  ],
+  "author": "Luiz Lopes <luiz@wickeddeveloper.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theprivileges/caesar-cipher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theprivileges/caesar-cipher/issues"
+  },
+  "homepage": "https://github.com/theprivileges/caesar-cipher#readme"
 }
