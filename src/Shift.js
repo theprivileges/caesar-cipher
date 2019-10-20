@@ -15,7 +15,7 @@ type Props = {
 
 const shouldUpdate = (prevProps: Props, nextProps: Props) : bool => prevProps.value === nextProps.value;
 
-const Shift = ({value, onChange}: Props): React.Node => (
+const Shift = ({value, onChange}: Props) => (
     <FormControl>
         <InputLabel htmlFor="delta">Delta</InputLabel>
         <Select

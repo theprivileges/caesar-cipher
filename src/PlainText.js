@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 
 type Props = {
     value: string,
-    onChange: <T>(SyntheticInputEvent<HTMLSelectElement>) => void
+    onChange: <T>(SyntheticInputEvent<HTMLInputElement>) => void
 }
 
 const shouldUpdate = (prevProps: Props, nextProps: Props) : bool => prevProps.value === nextProps.value;
