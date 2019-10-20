@@ -113,7 +113,7 @@ function App(): React.Node {
                         </FormControl>
                     </Paper>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper} elevation={0}>
                         <TextField
                             id="plain"
@@ -124,7 +124,7 @@ function App(): React.Node {
                             fullWidth />
                     </Paper>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper} elevation={0}>
                         <TextField
                             id="encrypted"
