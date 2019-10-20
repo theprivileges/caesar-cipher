@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+/* @flow */
+import * as React from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -11,36 +12,69 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const useStyles = makeStyles(theme => ({
+const { useState, useEffect } = React;
+
+type ThemeObject = {
+    spacing: (number) => string,
+    palette: {
+        text: {
+            secondary: string
+        }
+    }
+};
+
+type useStylesObject = {
     paper: {
-        padding: theme.spacing(2),
-        color: theme.palette.text.secondary,
+        padding: string,
+        color: string,
     },
+    delta: {
+        padding: string,
+        textAlign: string,
+    }
+};
+
+type useStylesFunction = (void) => { delta: string, paper: string};
+
+const makeStylesCb = (theme: ThemeObject) : useStylesObject => ({
     delta: {
         padding: theme.spacing(2),
         textAlign: 'center',
     },
-}));
+    paper: {
+        padding: theme.spacing(2),
+        color: theme.palette.text.secondary,
+    },
+})
 
-const upper = (delta) => (letter) => String.fromCharCode((letter.charCodeAt() + delta - 65) % 26 + 65);
-const lower = (delta) => (letter) => String.fromCharCode((letter.charCodeAt() + delta - 97) % 26 + 97);
-const encrypt = (text, delta) => text.replace(/[A-Z]/g, upper(delta)).replace(/[a-z]/g, lower(delta));
+
+const useStyles: useStylesFunction = makeStyles(makeStylesCb);
+
+
+const upper = (delta: number) => (letter: string) => String.fromCharCode((letter.charCodeAt(0) + delta - 65) % 26 + 65);
+const lower = (delta: number) => (letter: string) => String.fromCharCode((letter.charCodeAt(0) + delta - 97) % 26 + 97);
+const encrypt = (text: string, delta: number) => text.replace(/[A-Z]/g, upper(delta)).replace(/[a-z]/g, lower(delta));
 
 const shiftValues = [...Array(24).keys()];
 
-function App() {
+function App(): React.Node {
     const classes = useStyles();
-    const [text, setText] = useState('');
-    const [encrypted, setEncrypted] = useState('');
-    const [delta, setDelta] = useState('');
+    const [text: string, setText] = useState('');
+    const [encrypted: string, setEncrypted] = useState('');
+    const [delta: number, setDelta] = useState(0);
 
-    const handleTextChange = (e) => {
+    const handleDeltaChange = (e: SyntheticInputEvent<HTMLSelectElement>) : void => {
+        const value = Number.parseInt(e.target.value, 10);
+        setDelta(value);
+    }
+
+    const handleTextChange = (e: SyntheticInputEvent<HTMLInputElement>) : void => {
         const { value } = e.target;
         setText(value);
         setEncrypted(encrypt(value, delta));
     }
 
-    const handleEncryptedChange = (e) => {
+    const handleEncryptedChange = (e: SyntheticInputEvent<HTMLInputElement>) : void => {
         const { value } = e.target;
         setEncrypted(value);
         setText(encrypt(value, delta));
@@ -66,7 +100,7 @@ function App() {
                                 id="delta"
                                 name="delta"
                                 value={delta}
-                                onChange={(e) => setDelta(e.target.value)}
+                                onChange={handleDeltaChange}
                             >
                                 <MenuItem value={0}>
                                     <em>None</em>
