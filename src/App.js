@@ -10,7 +10,7 @@ import Shift from './Shift';
 import PlainText from './PlainText';
 import EncryptedText from './EncryptedText';
 
-const { useState, useEffect } = React;
+const { useReducer } = React;
 
 type ThemeObject = {
     spacing: (number) => string,
@@ -48,35 +48,72 @@ const makeStylesCb = (theme: ThemeObject) : useStylesObject => ({
 
 const useStyles: useStylesFunction = makeStyles(makeStylesCb);
 
+const initialState = {
+    shift: 0,
+    text: '',
+    encrypted: '',
+};
+
+// Actions
+const SHIFT_UPDATE = 'SHIFT_UPDATE';
+const TEXT_UPDATE = 'TEXT_UPDATE';
+const ENCRYPTED_UPDATE = 'ENCRYPTED_UPDATE';
+
+// Reducer
+const reducer = (state, action) => {
+    switch(action.type) {
+        case SHIFT_UPDATE:
+            const { shift } = action.payload;
+            return { shift, text: '', encrypted: ''};
+        case TEXT_UPDATE:
+            const { text } = action.payload;
+            return { ...state, text };
+        case ENCRYPTED_UPDATE:
+            const { encrypted } = action.payload;
+            return { ...state, encrypted };
+        default:
+            return {...state};
+    }
+};
+
+// Action Creators
+const updateShift = (shift) => ({
+    type: SHIFT_UPDATE,
+    payload: { shift },
+});
+
+const updateText = (text) => ({
+    type: TEXT_UPDATE,
+    payload: { text },
+});
+
+const updateEncrypted = (encrypted) => ({
+    type: ENCRYPTED_UPDATE,
+    payload: { encrypted }
+});
+
 
 function App(): React.Node {
     const classes = useStyles();
-    const [text: string, setText] = useState('');
-    const [encrypted: string, setEncrypted] = useState('');
-    const [delta: number, setDelta] = useState(0);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const { text, encrypted, shift } = state;
 
     const handleDeltaChange = (e: SyntheticInputEvent<HTMLSelectElement>) : void => {
         const value = Number.parseInt(e.target.value, 10);
-        setDelta(value);
-    }
+        dispatch(updateShift(value))
+    };
 
     const handleTextChange = (e: SyntheticInputEvent<HTMLInputElement>) : void => {
         const { value } = e.target;
-        setText(value);
-        setEncrypted(encrypt(value, delta));
-    }
+        dispatch(updateText(value))
+        dispatch(updateEncrypted(encrypt(value, shift)));
+    };
 
     const handleEncryptedChange = (e: SyntheticInputEvent<HTMLInputElement>) : void => {
         const { value } = e.target;
-        setEncrypted(value);
-        setText(encrypt(value, delta));
-    }
-
-    // Reset Text and Encrypted if we change the delta
-    useEffect(() => {
-        setText('')
-        setEncrypted('')
-    }, [delta])
+        dispatch(updateEncrypted(value));
+        dispatch(updateText(encrypt(value, shift)));
+    };
 
     return (
         <Container size="sm">
@@ -86,7 +123,7 @@ function App(): React.Node {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={classes.delta} elevation={0}>
-                        <Shift value={delta} onChange={handleDeltaChange}/>
+                        <Shift value={shift} onChange={handleDeltaChange}/>
                     </Paper>
                 </Grid>
                 <Grid item xs={12} sm={6}>
