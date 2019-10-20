@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import { encrypt } from './utils/index'
 import Shift from './Shift';
 import PlainText from './PlainText';
 import EncryptedText from './EncryptedText';
@@ -47,10 +48,6 @@ const makeStylesCb = (theme: ThemeObject) : useStylesObject => ({
 
 const useStyles: useStylesFunction = makeStyles(makeStylesCb);
 
-
-const upper = (delta: number) => (letter: string) => String.fromCharCode((letter.charCodeAt(0) + delta - 65) % 26 + 65);
-const lower = (delta: number) => (letter: string) => String.fromCharCode((letter.charCodeAt(0) + delta - 97) % 26 + 97);
-const encrypt = (text: string, delta: number) => text.replace(/[A-Z]/g, upper(delta)).replace(/[a-z]/g, lower(delta));
 
 function App(): React.Node {
     const classes = useStyles();
