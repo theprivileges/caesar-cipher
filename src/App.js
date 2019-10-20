@@ -5,9 +5,9 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
 import Shift from './Shift';
-import PlainText from './PlainText'
+import PlainText from './PlainText';
+import EncryptedText from './EncryptedText';
 
 const { useState, useEffect } = React;
 
@@ -99,13 +99,7 @@ function App(): React.Node {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper} elevation={0}>
-                        <TextField
-                            id="encrypted"
-                            name="encrypted"
-                            label="Encrypted Text"
-                            value={encrypted}
-                            onChange={handleEncryptedChange}
-                            fullWidth />
+                        <EncryptedText value={encrypted} onChange={handleEncryptedChange}/>
                     </Paper>
                 </Grid>
             </Grid>
