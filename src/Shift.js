@@ -5,34 +5,39 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { useAppState, updateShift } from './context/app'
 
-const shiftValues = [...Array(24).keys()];
+const shiftValues = [...Array(25).keys()];
 
-type Props = {
-    value: number,
-    onChange: <T>(SyntheticInputEvent<HTMLSelectElement>) => void,
-}
 
-const shouldUpdate = (prevProps: Props, nextProps: Props) : bool => prevProps.value === nextProps.value;
+const Shift = () => {
+    const [state, dispatch] = useAppState();
+    const { shift } = state;
 
-const Shift = ({value, onChange}: Props) => (
-    <FormControl>
-        <InputLabel htmlFor="delta">Delta</InputLabel>
-        <Select
-            id="delta"
-            name="delta"
-            value={value}
-            onChange={onChange}
-        >
-            <MenuItem value={0}>
-                <em>None</em>
-            </MenuItem>
-            {shiftValues.map((idx) => (
-                <MenuItem key={idx} value={idx + 1}>{idx + 1}</MenuItem>
-            ))}
-        </Select>
-        <FormHelperText>How many letters to shift.</FormHelperText>
-    </FormControl>
-);
+    const onChange = (e: SyntheticInputEvent<HTMLSelectElement>) : void => {
+        const value = Number.parseInt(e.target.value, 10);
+        dispatch(updateShift(value))
+    };
 
-export default React.memo<Props>(Shift, shouldUpdate);
+    return (
+        <FormControl>
+            <InputLabel htmlFor="delta">Delta</InputLabel>
+            <Select
+                id="delta"
+                name="delta"
+                value={shift}
+                onChange={onChange}
+            >
+                <MenuItem value={0}>
+                    <em>None</em>
+                </MenuItem>
+                {shiftValues.map((idx) => (
+                    <MenuItem key={idx} value={idx + 1}>{idx + 1}</MenuItem>
+                ))}
+            </Select>
+            <FormHelperText>How many letters to shift.</FormHelperText>
+        </FormControl>
+    );
+ };
+
+export default Shift;

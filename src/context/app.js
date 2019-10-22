@@ -83,7 +83,7 @@ const useAppDispatchContext = () => {
     return context;
 };
 
-const useAppState = () => [useAppStateContext, useAppDispatchContext];
+const useAppState = () => [useAppStateContext(), useAppDispatchContext()];
 
 export {
     useAppState,

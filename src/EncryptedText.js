@@ -1,22 +1,29 @@
 /* @flow */
 import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
+import { useAppState, updateEncrypted, updateText } from './context/app';
+import { encrypt } from './utils/index';
 
-type Props = {
-    value: string,
-    onChange: <T>(SyntheticInputEvent<HTMLInputElement>) => void
-}
 
-const shouldUpdate = (prevProps: Props, nextProps: Props) : bool => prevProps.value === nextProps.value;
+const EncryptedText = () => {
+    const [state, dispatch] = useAppState();
+    const { encrypted, shift } = state;
 
-const EncryptedText = ({value, onChange}: Props) => (
-    <TextField
-        id="encrypted"
-        name="encrypted"
-        label="Encrypted Text"
-        value={value}
-        onChange={onChange}
-        fullWidth />
-);
+    const onChange = (e: SyntheticInputEvent<HTMLInputElement>) : void => {
+        const { value } = e.target;
+        dispatch(updateEncrypted(value));
+        dispatch(updateText(encrypt(value, shift)));
+    };
 
-export default React.memo<Props>(EncryptedText, shouldUpdate)
+    return ( 
+        <TextField
+            id="encrypted"
+            name="encrypted"
+            label="Encrypted Text"
+            value={encrypted}
+            onChange={onChange}
+            fullWidth />
+    );
+ };
+
+export default EncryptedText;
