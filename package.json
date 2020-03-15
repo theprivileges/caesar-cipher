@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "flow": "flow",
-    "preversion": "yarn test",
+    "preversion": "yarn test --watchAll=false",
     "postversion": "git push --tags && yarn deploy && git push && echo \"Successfully deployed version $npm_package_version!\""
   },
   "eslintConfig": {
