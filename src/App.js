@@ -111,8 +111,9 @@ function App(): React.Node {
 
     const handleEncryptedChange = (e: SyntheticInputEvent<HTMLInputElement>) : void => {
         const { value } = e.target;
+        const unshift = (26 - shift) % 26;
         dispatch(updateEncrypted(value));
-        dispatch(updateText(encrypt(value, shift)));
+        dispatch(updateText(encrypt(value, unshift)));
     };
 
     return (
